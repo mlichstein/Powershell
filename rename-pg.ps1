@@ -15,7 +15,7 @@ if ( (Get-PSSnapin -Name "VMware.VimAutomation.Core" -ErrorAction SilentlyContin
 
 if ( !($vcenter) -or !($cluster) -or !($switch) -or !($oldpg) -or !($newpg) -or !($vlan) )
 {
-    Write-Host `n "rename-pg.ps1: <vcenter-server> <cluster> <oldpg> <newpg>" `n
+    Write-Host `n "rename-pg.ps1: <vcenter-server> <cluster> <switch> <oldpg> <newpg>" `n
     Write-Host "This script renames each port group with the name <oldpg> to <newpg>" `n
     Write-Host "   <vcenter-server>  - DNS name of your vCenter server." `n
     Write-Host "   <cluster>         - Display-Name of the vCenter cluster, on which we are"
