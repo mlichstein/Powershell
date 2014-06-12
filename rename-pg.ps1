@@ -10,7 +10,7 @@ param(
 if ( (Get-PSSnapin -Name "VMware.VimAutomation.Core" -ErrorAction SilentlyContinue) -eq $null )
 {
     Add-PSSnapin -Name "VMware.VimAutomation.Core"
-		Add-PSSnapin -Name "VMware.VimAutomation.Vds"
+    Add-PSSnapin -Name "VMware.VimAutomation.Vds"
 }
 
 if ( !($vcenter) -or !($cluster) -or !($switch) -or !($oldpg) -or !($newpg) -or !($vlan) )
@@ -20,7 +20,7 @@ if ( !($vcenter) -or !($cluster) -or !($switch) -or !($oldpg) -or !($newpg) -or 
     Write-Host "   <vcenter-server>  - DNS name of your vCenter server." `n
     Write-Host "   <cluster>         - Display-Name of the vCenter cluster, on which we are"
     Write-Host "                       gonna create the new portgroup." `n
-		Write-Host "   <switch>          - Name of distributed switch where you want to modify portgroups." `n
+    Write-Host "   <switch>          - Name of distributed switch where you want to modify portgroups." `n
     Write-Host "   <oldpg>           - Name of the old portgroup that is to be replaced (ie VLAN2)." `n
     Write-Host "   <newpg>           - Name of the new portgroup (ie PG-VLAN2-Production)." `n
     Write-Host "   <vlan>            - VLAN-ID for the new port group." `n
