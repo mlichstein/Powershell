@@ -1,7 +1,7 @@
 param(
     [string] $vcenter,
     [string] $cluster,
-		[string] $switch,
+    [string] $switch,
     [string] $oldpg,
     [string] $newpg,
     [string] $vlan )
@@ -31,7 +31,7 @@ Connect-VIServer -Server $vcenter
 
 Get-VDSwitch -Name $switch | New-VDPortGroup -Name $newpg -VlanId $vlan
 Get-Cluster $cluster | Get-VM | Get-NetworkAdapter | Where { $_.NetworkName -eq "oldpg" } | `
-		Set-NetworkAdapter -NetworkName $newpg -Confirm:$false
+    Set-NetworkAdapter -NetworkName $newpg -Confirm:$false
 Get-VDPortGroup -Name $oldpg -VDSwitch $switch | Remove-VDPortGroup -Confirm:$false
 
 Disconnect-VIServer -server $vcenter -Confirm:$false
