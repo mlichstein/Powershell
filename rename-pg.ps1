@@ -1,6 +1,5 @@
 param(
     [string] $vcenter,
-    [string] $cluster,
     [string] $switch,
     [string] $oldpg,
     [string] $newpg,
@@ -13,13 +12,11 @@ if ( (Get-PSSnapin -Name "VMware.VimAutomation.Core" -ErrorAction SilentlyContin
     Add-PSSnapin -Name "VMware.VimAutomation.Vds"
 }
 
-if ( !($vcenter) -or !($cluster) -or !($switch) -or !($oldpg) -or !($newpg) -or !($vlan) )
+if ( !($vcenter) -or !($switch) -or !($oldpg) -or !($newpg) -or !($vlan) )
 {
     Write-Host `n "rename-pg.ps1: <vcenter-server> <cluster> <switch> <oldpg> <newpg>" `n
     Write-Host "This script renames each port group with the name <oldpg> to <newpg>" `n
     Write-Host "   <vcenter-server>  - DNS name of your vCenter server." `n
-    Write-Host "   <cluster>         - Display-Name of the vCenter cluster, on which we are"
-    Write-Host "                       going to create the new portgroup." `n
     Write-Host "   <switch>          - Name of distributed switch where you want to modify the portgroups." `n
     Write-Host "   <oldpg>           - Name of the old portgroup that is to be replaced (ie VLAN2)." `n
     Write-Host "   <newpg>           - Name of the new portgroup (ie PG-VLAN2-Production)." `n
@@ -29,9 +26,15 @@ if ( !($vcenter) -or !($cluster) -or !($switch) -or !($oldpg) -or !($newpg) -or 
 
 Connect-VIServer -Server $vcenter
 
+#Create new portgroup
 Get-VDSwitch -Name $switch | New-VDPortGroup -Name $newpg -VlanId $vlan
-Get-Cluster $cluster | Get-VM | Get-NetworkAdapter | Where { $_.NetworkName -eq "oldpg" } | `
-    Set-NetworkAdapter -NetworkName $newpg -Confirm:$false
+
+#Move VM adapters to new portgroup
+$oldpg_temp = Get-VDPortGroup -Name $oldpg
+$net_adpaters = Get-NetworkAdapter -RelatedObject $oldpg_temp
+Set-NetworkAdapter -NetworkAdapter $net_adpaters -Portgroup $newpg -Confirm:$false
+
+#Delete old portgroup
 Get-VDPortGroup -Name $oldpg -VDSwitch $switch | Remove-VDPortGroup -Confirm:$false
 
 Disconnect-VIServer -server $vcenter -Confirm:$false
