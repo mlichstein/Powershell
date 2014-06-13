@@ -1,10 +1,3 @@
-param(
-    [string] $vcenter,
-    [string] $switch,
-    [string] $oldpg,
-    [string] $newpg,
-    [string] $vlan )
-
 # Add the VI-Snapin if it isn't loaded already
 if ( (Get-PSSnapin -Name "VMware.VimAutomation.Core" -ErrorAction SilentlyContinue) -eq $null )
 {
@@ -12,17 +5,11 @@ if ( (Get-PSSnapin -Name "VMware.VimAutomation.Core" -ErrorAction SilentlyContin
     Add-PSSnapin -Name "VMware.VimAutomation.Vds"
 }
 
-if ( !($vcenter) -or !($switch) -or !($oldpg) -or !($newpg) -or !($vlan) )
-{
-    Write-Host `n "rename-pg.ps1: <vcenter-server> <cluster> <switch> <oldpg> <newpg>" `n
-    Write-Host "This script renames each port group with the name <oldpg> to <newpg>" `n
-    Write-Host "   <vcenter-server>  - DNS name of your vCenter server." `n
-    Write-Host "   <switch>          - Name of distributed switch where you want to modify the portgroups." `n
-    Write-Host "   <oldpg>           - Name of the old portgroup that is to be replaced (ie VLAN2)." `n
-    Write-Host "   <newpg>           - Name of the new portgroup (ie PG-VLAN2-Production)." `n
-    Write-Host "   <vlan>            - VLAN-ID for the new port group." `n
-    exit 1
-}
+$vcenter = Read-Host "Enter the vCenter name: "
+$switch = Read-Host "Enter the switch name: "
+$oldpg = Read-Host "Enter the OLD portgroup name: "
+$newpg = Read-Host "Enter the NEW portgroup name: "
+$vlan = Read-Host "Enter the VLAN ID for the new portgroup: "
 
 Connect-VIServer -Server $vcenter
 
