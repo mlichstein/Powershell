@@ -1,10 +1,10 @@
 rename-pg.ps1
 ==========
-Usage: `rename-pg.ps1 <vcenter-server> <cluster> <switch> <oldpg> <newpg>`
+This script will rename an existing distributed switch portgroup. It creates a new portgroup, moves all interfaces from the old portgroup to the new portgroup, and then deletes the old portgroup.
 
-`vcenter-server`: DNS name of your vCenter server.  
-`cluster`: Display name of the vCenter cluster, on which we are going to create the new portgroup.  
-`switch`: Name of distributed switch where you want to modify the portgroups.  
-`oldpg`: Name of the old portgroup that is to be replaced (ie VLAN2).  
-`newpg`: Name of the new portgroup (ie PG-VLAN2-Production).  
-`vlan`: VLAN ID for the new portgroup.  
+The script will prompt for the following:  
+**vCenter Name**: The name of the vCenter instance with the switch you want to modify.  
+**Switch Name**: The name of the VMWare distributed virtual switch.  
+**Old Portgroup**: The name of the portgroup that you want to remove.  
+**New Portgroup**: The name of the portgroup that you want to create.  
+**VLAN**: The VLAN number for the new portgroup.  
